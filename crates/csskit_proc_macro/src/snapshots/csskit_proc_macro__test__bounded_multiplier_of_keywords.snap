@@ -3,8 +3,8 @@ source: crates/csskit_proc_macro/src/test.rs
 expression: pretty
 ---
 ::css_parse::keyword_set!(
-    #[derive(::csskit_derives::Visitable)] #[visit(skip)] pub enum FooKeywords { None :
-    "none", Some : "some", }
+    #[derive(::csskit_derives::Visitable)] #[visit(skip)] pub enum FooKeywords { Foo :
+    "foo", Bar : "bar", }
 );
 #[derive(
     ::csskit_derives::ToSpan,
