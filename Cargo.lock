@@ -355,6 +355,7 @@ name = "chromashift"
 version = "0.0.10"
 dependencies = [
  "anstyle",
+ "owo-colors",
 ]
 
 [[package]]
@@ -717,6 +718,7 @@ dependencies = [
  "csskit_lsp",
  "itertools 0.14.0",
  "miette",
+ "owo-colors",
  "serde",
  "serde_json",
  "strsim",
@@ -765,6 +767,8 @@ dependencies = [
  "css_lexer",
  "css_parse",
  "insta",
+ "miette",
+ "owo-colors",
  "similar",
  "strum",
 ]
