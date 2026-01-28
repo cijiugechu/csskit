@@ -82,13 +82,12 @@ if [[ "$MODE" == "RELEASE" ]]; then
 	npm pub --provenance --tag next --access public --loglevel=silly
 	popd
 
-	# Release all cargo crates
-	cargo publish --allow-dirty
-
 	# Update GitHub release
 	gh release create "$VERSION" --generate-notes
 	gh release upload "$VERSION" binary-*/*
 
+	# Release all cargo crates
+	cargo publish --allow-dirty
 else
 	# CANARY MODE: Create/update release PR
 	echo "Creating/updating release PR..."
