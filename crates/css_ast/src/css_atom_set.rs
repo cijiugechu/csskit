@@ -1716,6 +1716,7 @@ pub enum CssAtomSet {
 	ScrollbarGutter,
 	ScrollbarWidth,
 	Scrolled,
+	ScrollState,
 	Sdev,
 	SeResize,
 	Seagreen,
