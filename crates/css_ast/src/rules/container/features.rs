@@ -72,6 +72,7 @@ pub enum StyleQuery<'a> {
 	Or(Vec<'a, (StyleFeature<'a>, Option<T![Ident]>)>),
 }
 
+#[allow(clippy::large_enum_variant)]
 #[derive(ToCursors, ToSpan, SemanticEq, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize), serde())]
 #[cfg_attr(feature = "visitable", derive(csskit_derives::Visitable), visit)]
