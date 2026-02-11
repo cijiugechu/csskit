@@ -267,14 +267,22 @@ mod tests {
 		// Style queries
 		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "style(--x:10px)");
 		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "style(--x: 10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "style(--x)");
 		assert_parse!(CssAtomSet::ATOMS, ContainerQuery, "style(--x:10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerQuery, "style(--x)");
 		assert_parse!(CssAtomSet::ATOMS, ContainerCondition, "style(--x:10px)");
 		assert_parse!(CssAtomSet::ATOMS, ContainerCondition, "style(--x: 10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerCondition, "style(--x)");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x:10px){}");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x: 10px){}");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x){}");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x:10px){body{color:green}}");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x: 10px){body{color:green}}");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container foo style(--x:10px){}");
+		// Scroll-state queries
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "scroll-state(stuck:top)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "scroll-state(scrollable:y and snapped:block)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container sticky scroll-state(stuck: top){}");
 	}
 
 	#[test]
