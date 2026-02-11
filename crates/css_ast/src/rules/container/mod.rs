@@ -165,11 +165,10 @@ impl<'a> Peek<'a> for ContainerFeature<'a> {
 	where
 		I: Iterator<Item = Cursor> + Clone,
 	{
-		if c == Kind::Function && matches!(p.to_atom::<CssAtomSet>(c), CssAtomSet::Style | CssAtomSet::ScrollState) {
-			return true;
-		}
 		let c2 = p.peek_n(2);
-		c == Kind::LeftParen && c2 == KindSet::new(&[Kind::Ident, Kind::Dimension])
+		(c == Kind::LeftParen && c2 == KindSet::new(&[Kind::Ident, Kind::Dimension]))
+			|| (c == Kind::Function
+				&& matches!(p.to_atom::<CssAtomSet>(c), CssAtomSet::Style | CssAtomSet::ScrollState))
 	}
 }
 
@@ -265,6 +264,25 @@ mod tests {
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container foo (width:2px){}");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container foo (10em<width<10em){}");
 		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container foo (width:2px){body{color:black}}");
+		// Style queries
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "style(--x:10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "style(--x: 10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "style(--x)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerQuery, "style(--x:10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerQuery, "style(--x)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerCondition, "style(--x:10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerCondition, "style(--x: 10px)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerCondition, "style(--x)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x:10px){}");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x: 10px){}");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x){}");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x:10px){body{color:green}}");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container style(--x: 10px){body{color:green}}");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container foo style(--x:10px){}");
+		// Scroll-state queries
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "scroll-state(stuck:top)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerFeature, "scroll-state(scrollable:y and snapped:block)");
+		assert_parse!(CssAtomSet::ATOMS, ContainerRule, "@container sticky scroll-state(stuck: top){}");
 	}
 
 	#[test]

@@ -357,6 +357,7 @@ expression: "matches.iter().map(|node|\nnode.input.to_token_stream().to_string()
   "pub enum StrokeLinecapStyleValue { }",
   "pub enum StrokeOriginStyleValue { }",
   "pub enum StuckScrollStateFeatureKeyword { }",
+  "pub enum StyleFeature < \'a > { }",
   "pub enum StyleQuery < \'a > { }",
   "pub enum StyleValue < \'a > { }",
   "pub enum SupportsCondition < \'a > { }",

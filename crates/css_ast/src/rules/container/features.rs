@@ -66,14 +66,37 @@ discrete_feature!(
 #[cfg_attr(feature = "visitable", derive(csskit_derives::Visitable), visit)]
 #[derive(csskit_derives::NodeWithMetadata)]
 pub enum StyleQuery<'a> {
-	Is(Declaration<'a, StyleValue<'a>, CssMetadata>),
-	Not(T![Ident], Declaration<'a, StyleValue<'a>, CssMetadata>),
-	And(Vec<'a, (Declaration<'a, StyleValue<'a>, CssMetadata>, Option<T![Ident]>)>),
-	Or(Vec<'a, (Declaration<'a, StyleValue<'a>, CssMetadata>, Option<T![Ident]>)>),
+	Is(StyleFeature<'a>),
+	Not(T![Ident], StyleFeature<'a>),
+	And(Vec<'a, (StyleFeature<'a>, Option<T![Ident]>)>),
+	Or(Vec<'a, (StyleFeature<'a>, Option<T![Ident]>)>),
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(ToCursors, ToSpan, SemanticEq, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize), serde())]
+#[cfg_attr(feature = "visitable", derive(csskit_derives::Visitable), visit)]
+#[derive(csskit_derives::NodeWithMetadata)]
+pub enum StyleFeature<'a> {
+	Declaration(Declaration<'a, StyleValue<'a>, CssMetadata>),
+	CustomProperty(T![Ident]),
+}
+
+impl<'a> Parse<'a> for StyleFeature<'a> {
+	fn parse<I>(p: &mut Parser<'a, I>) -> ParserResult<Self>
+	where
+		I: Iterator<Item = Cursor> + Clone,
+	{
+		let c = p.peek_n(1);
+		if c == Kind::Ident && c.token().is_dashed_ident() && p.peek_n(2) != Kind::Colon {
+			return Ok(Self::CustomProperty(p.parse::<T![Ident]>()?));
+		}
+		Ok(Self::Declaration(p.parse::<Declaration<'a, StyleValue<'a>, CssMetadata>>()?))
+	}
 }
 
 impl<'a> FeatureConditionList<'a> for StyleQuery<'a> {
-	type FeatureCondition = Declaration<'a, StyleValue<'a>, CssMetadata>;
+	type FeatureCondition = StyleFeature<'a>;
 	fn keyword_is_not<I>(p: &Parser<'a, I>, c: Cursor) -> bool
 	where
 		I: Iterator<Item = Cursor> + Clone,
@@ -364,6 +387,11 @@ mod tests {
 		assert_parse!(CssAtomSet::ATOMS, HeightContainerFeature, "(height>=1400px)");
 		assert_parse!(CssAtomSet::ATOMS, HeightContainerFeature, "(100px<=height)");
 		assert_parse!(CssAtomSet::ATOMS, HeightContainerFeature, "(100px<=height>1400px)");
+		assert_parse!(CssAtomSet::ATOMS, StyleQuery, "--x");
+		assert_parse!(CssAtomSet::ATOMS, StyleQuery, "--x:10px");
+		assert_parse!(CssAtomSet::ATOMS, StyleQuery, "--x and --y:20px");
+		assert_parse!(CssAtomSet::ATOMS, ScrollStateQuery, "stuck:top");
+		assert_parse!(CssAtomSet::ATOMS, ScrollStateQuery, "scrollable:y and snapped:block");
 	}
 
 	#[test]
