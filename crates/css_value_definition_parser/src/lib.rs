@@ -105,10 +105,12 @@ impl DefType {
 				| "CursorImage"  // contains Image<'a>
 				| "EasingFunction"  // contains LinearFunction<'a> with CommaSeparated
 				// Types that reference other allocating types
-				| "LineWidthOrRepeat"  // contains Repeat<'a>
-				| "LineWidthList"  // contains LineWidthOrRepeat<'a>
-				| "AutoLineWidthList"  // contains Repeat<'a> and LineWidthOrRepeat<'a>
-				| "FamilyName"  // may contain allocating elements
+					| "LineWidthOrRepeat"  // contains Repeat<'a>
+					| "LineWidthList"  // contains LineWidthOrRepeat<'a>
+					| "AutoLineWidthList"  // contains Repeat<'a> and LineWidthOrRepeat<'a>
+					| "GapRuleList"  // contains Vec<'a, ...>
+					| "GapAutoRuleList"  // contains Vec<'a, ...>
+					| "FamilyName"  // may contain allocating elements
 				| "BgImage"  // contains Image<'a>
 				| "DynamicRangeLimit"  // contains DynamicRangeLimitMixFunction<'a>
 				| "DynamicRangeLimitMixFunction"  // contains allocating params
@@ -335,9 +337,11 @@ impl Def {
 						| "ScrollTimelineName"
 						| "ViewTimelineAxis"
 						| "ViewTimelineName"
-						| "BorderTopClip"
-				)
-			}
+							| "BorderTopClip"
+							| "ColumnRule"
+							| "RowRule"
+					)
+				}
 			Self::AutoOr(d) | Self::NoneOr(d) | Self::AutoNoneOr(d) | Self::NormalOr(d) => d.maybe_unsized(),
 			Self::Optional(d) => d.maybe_unsized(),
 			Self::Combinator(ds, _) => ds.iter().any(|d| d.maybe_unsized()),

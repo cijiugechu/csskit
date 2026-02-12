@@ -20,7 +20,7 @@ use impls::*;
 /// https://drafts.csswg.org/css-gaps-1/#column-rule
 #[syntax(" <gap-rule-list> | <gap-auto-rule-list> ")]
 #[derive(
-	Parse, Peek, ToSpan, ToCursors, DeclarationMetadata, SemanticEq, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
+	Peek, ToSpan, ToCursors, DeclarationMetadata, SemanticEq, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
 )]
 #[declaration_metadata(
     initial = "see individual properties",
@@ -37,7 +37,7 @@ use impls::*;
 #[cfg_attr(feature = "css_feature_data", derive(ToCSSFeature), css_feature("css.properties.column-rule"))]
 #[cfg_attr(feature = "visitable", derive(Visitable), visit)]
 #[derive(csskit_derives::NodeWithMetadata)]
-pub enum ColumnRuleStyleValue {}
+pub enum ColumnRuleStyleValue<'a> {}
 
 /// Represents the style value for `column-rule-break` as defined in [css-gaps-1](https://drafts.csswg.org/css-gaps-1/#column-rule-break).
 ///
@@ -475,7 +475,7 @@ pub enum ColumnRuleWidthStyleValue<'a> {}
 /// https://drafts.csswg.org/css-gaps-1/#row-rule
 #[syntax(" <gap-rule-list> | <gap-auto-rule-list> ")]
 #[derive(
-	Parse, Peek, ToSpan, ToCursors, DeclarationMetadata, SemanticEq, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
+	Peek, ToSpan, ToCursors, DeclarationMetadata, SemanticEq, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
 )]
 #[declaration_metadata(
     initial = "see individual properties",
@@ -491,7 +491,7 @@ pub enum ColumnRuleWidthStyleValue<'a> {}
 #[cfg_attr(feature = "css_feature_data", derive(ToCSSFeature), css_feature("css.properties.row-rule"))]
 #[cfg_attr(feature = "visitable", derive(Visitable), visit)]
 #[derive(csskit_derives::NodeWithMetadata)]
-pub enum RowRuleStyleValue {}
+pub enum RowRuleStyleValue<'a> {}
 
 /// Represents the style value for `row-rule-break` as defined in [css-gaps-1](https://drafts.csswg.org/css-gaps-1/#row-rule-break).
 ///
@@ -919,7 +919,7 @@ pub enum RowRuleWidthStyleValue<'a> {}
 #[cfg_attr(feature = "css_feature_data", derive(ToCSSFeature), css_feature("css.properties.rule"))]
 #[cfg_attr(feature = "visitable", derive(Visitable), visit)]
 #[derive(csskit_derives::NodeWithMetadata)]
-pub struct RuleStyleValue;
+pub struct RuleStyleValue<'a>;
 
 /// Represents the style value for `rule-break` as defined in [css-gaps-1](https://drafts.csswg.org/css-gaps-1/#rule-break).
 ///
