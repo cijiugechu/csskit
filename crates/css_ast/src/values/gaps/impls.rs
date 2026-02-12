@@ -60,9 +60,17 @@ mod tests {
 
 	#[test]
 	fn test_errors() {
-		assert_parse_error!(CssAtomSet::ATOMS, ColumnRuleStyleValue, "repeat(auto, 1px solid red), repeat(auto, 2px dashed green)");
+		assert_parse_error!(
+			CssAtomSet::ATOMS,
+			ColumnRuleStyleValue,
+			"repeat(auto, 1px solid red), repeat(auto, 2px dashed green)"
+		);
 		assert_parse_error!(CssAtomSet::ATOMS, ColumnRuleStyleValue, "repeat(auto,)");
-		assert_parse_error!(CssAtomSet::ATOMS, RowRuleStyleValue, "repeat(auto, 1px solid red), repeat(auto, 2px dashed green)");
+		assert_parse_error!(
+			CssAtomSet::ATOMS,
+			RowRuleStyleValue,
+			"repeat(auto, 1px solid red), repeat(auto, 2px dashed green)"
+		);
 		assert_parse_error!(CssAtomSet::ATOMS, RuleStyleValue, "repeat(auto,)");
 		assert_parse_error!(CssAtomSet::ATOMS, RuleStyleValue, "1px solid red,");
 	}

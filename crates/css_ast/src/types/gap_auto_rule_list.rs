@@ -126,10 +126,8 @@ impl<'a> Parse<'a> for GapAutoRuleList<'a> {
 	{
 		let start = p.peek_n(1);
 		let items = parse_comma_separated::<_, GapAutoRuleListItem<'a>>(p)?;
-		let auto_count = items
-			.iter()
-			.filter(|(item, _)| matches!(item, GapAutoRuleListItem::GapAutoRepeatRule(_)))
-			.count();
+		let auto_count =
+			items.iter().filter(|(item, _)| matches!(item, GapAutoRuleListItem::GapAutoRepeatRule(_))).count();
 
 		if auto_count != 1 {
 			Err(Diagnostic::new(start, Diagnostic::unexpected))?
@@ -206,7 +204,11 @@ mod tests {
 		assert_parse!(CssAtomSet::ATOMS, GapAutoRuleList, "repeat(auto, 1px solid red)");
 		assert_parse!(CssAtomSet::ATOMS, GapAutoRuleList, "1px solid red, repeat(auto, 2px dashed green)");
 		assert_parse!(CssAtomSet::ATOMS, GapAutoRuleList, "repeat(auto, 1px solid red), 2px dashed green");
-		assert_parse!(CssAtomSet::ATOMS, GapAutoRuleList, "1px solid red, repeat(auto, 2px dashed green), 3px dotted blue");
+		assert_parse!(
+			CssAtomSet::ATOMS,
+			GapAutoRuleList,
+			"1px solid red, repeat(auto, 2px dashed green), 3px dotted blue"
+		);
 	}
 
 	#[test]

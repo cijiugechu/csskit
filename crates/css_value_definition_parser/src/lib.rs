@@ -337,11 +337,10 @@ impl Def {
 						| "ScrollTimelineName"
 						| "ViewTimelineAxis"
 						| "ViewTimelineName"
-							| "BorderTopClip"
-							| "ColumnRule"
-							| "RowRule"
-					)
-				}
+						| "BorderTopClip" | "ColumnRule"
+						| "RowRule"
+				)
+			}
 			Self::AutoOr(d) | Self::NoneOr(d) | Self::AutoNoneOr(d) | Self::NormalOr(d) => d.maybe_unsized(),
 			Self::Optional(d) => d.maybe_unsized(),
 			Self::Combinator(ds, _) => ds.iter().any(|d| d.maybe_unsized()),
