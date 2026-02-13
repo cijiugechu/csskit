@@ -1,6 +1,5 @@
 ---
 source: crates/csskit_source_finder/src/lib.rs
-assertion_line: 209
 expression: "matches.iter().map(|node|\nnode.input.to_token_stream().to_string()).sorted().collect::<Vec<_>>()"
 ---
 [
@@ -152,8 +151,6 @@ expression: "matches.iter().map(|node|\nnode.input.to_token_stream().to_string()
   "pub enum ForcedColorsMediaFeatureKeyword { }",
   "pub enum FunctionalPseudoClass < \'a > { }",
   "pub enum FunctionalPseudoElement < \'a > { }",
-  "pub enum GapAutoRuleListItem < \'a > { }",
-  "pub enum GapRuleItem { }",
   "pub enum GapRuleOrRepeat < \'a > { }",
   "pub enum GenericFamily { }",
   "pub enum GlyphOrientationVerticalStyleValue { }",
@@ -641,10 +638,7 @@ expression: "matches.iter().map(|node|\nnode.input.to_token_stream().to_string()
   "pub struct FontFeatureSettingsStyleValue < \'a > { }",
   "pub struct FontLanguageOverrideStyleValue { }",
   "pub struct FontVariationSettingsStyleValue < \'a > { }",
-  "pub struct GapAutoRepeatRule < \'a > { }",
-  "pub struct GapAutoRuleList < \'a > { }",
   "pub struct GapRepeatRule < \'a > { }",
-  "pub struct GapRule < \'a > { }",
   "pub struct GapRuleList < \'a > { }",
   "pub struct GapStyleValue { }",
   "pub struct GridAutoColumnsStyleValue < \'a > { }",

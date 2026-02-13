@@ -1,33 +1,13 @@
 use super::{ColumnRuleStyleValue, RowRuleStyleValue};
-use crate::{GapAutoRuleList, GapRuleList};
-use css_parse::{Cursor, Diagnostic, Parse, Parser, Result as ParseResult};
-
-fn parse_gap_rule_or_auto<'a, I, T>(
-	p: &mut Parser<'a, I>,
-	from_rule: fn(GapRuleList<'a>) -> T,
-	from_auto: fn(GapAutoRuleList<'a>) -> T,
-) -> ParseResult<T>
-where
-	I: Iterator<Item = Cursor> + Clone,
-{
-	let start = p.peek_n(1);
-	let checkpoint = p.checkpoint();
-	if let Ok(value) = p.parse::<GapRuleList<'a>>() {
-		return Ok(from_rule(value));
-	}
-	p.rewind(checkpoint);
-	if let Ok(value) = p.parse::<GapAutoRuleList<'a>>() {
-		return Ok(from_auto(value));
-	}
-	Err(Diagnostic::new(start, Diagnostic::unexpected))
-}
+use crate::GapRuleList;
+use css_parse::{Cursor, Parse, Parser, Result as ParseResult};
 
 impl<'a> Parse<'a> for ColumnRuleStyleValue<'a> {
 	fn parse<I>(p: &mut Parser<'a, I>) -> ParseResult<Self>
 	where
 		I: Iterator<Item = Cursor> + Clone,
 	{
-		parse_gap_rule_or_auto(p, Self::GapRuleList, Self::GapAutoRuleList)
+		p.parse::<GapRuleList<'a>>().map(Self::GapRuleList)
 	}
 }
 
@@ -36,7 +16,7 @@ impl<'a> Parse<'a> for RowRuleStyleValue<'a> {
 	where
 		I: Iterator<Item = Cursor> + Clone,
 	{
-		parse_gap_rule_or_auto(p, Self::GapRuleList, Self::GapAutoRuleList)
+		p.parse::<GapRuleList<'a>>().map(Self::GapRuleList)
 	}
 }
 
@@ -60,13 +40,13 @@ mod tests {
 
 	#[test]
 	fn test_errors() {
-		assert_parse_error!(
+		assert_parse!(
 			CssAtomSet::ATOMS,
 			ColumnRuleStyleValue,
 			"repeat(auto, 1px solid red), repeat(auto, 2px dashed green)"
 		);
 		assert_parse_error!(CssAtomSet::ATOMS, ColumnRuleStyleValue, "repeat(auto,)");
-		assert_parse_error!(
+		assert_parse!(
 			CssAtomSet::ATOMS,
 			RowRuleStyleValue,
 			"repeat(auto, 1px solid red), repeat(auto, 2px dashed green)"
