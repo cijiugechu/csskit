@@ -401,6 +401,13 @@ impl Def {
 					}
 					// "<length-percentage> | <flex>" can be simplified to "<length-percentage-or-flex>"
 					(Def::Type(type1), Def::Type(type2)) => match (type1.ident_str(), type2.ident_str()) {
+						// "<gap-rule-list> | <gap-auto-rule-list>" can be flattened to "<gap-rule-list>"
+						("GapRuleList", "GapAutoRuleList") => {
+							Def::Type(DefType::new("GapRuleList", type1.range.clone()))
+						}
+						("GapAutoRuleList", "GapRuleList") => {
+							Def::Type(DefType::new("GapRuleList", type2.range.clone()))
+						}
 						("LengthPercentage", "Flex") | ("Flex", "LengthPercentage") => {
 							Def::Type(DefType::new("LengthPercentageOrFlex", type1.range.clone()))
 						}

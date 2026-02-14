@@ -1,25 +1,3 @@
-use super::{ColumnRuleStyleValue, RowRuleStyleValue};
-use crate::GapRuleList;
-use css_parse::{Cursor, Parse, Parser, Result as ParseResult};
-
-impl<'a> Parse<'a> for ColumnRuleStyleValue<'a> {
-	fn parse<I>(p: &mut Parser<'a, I>) -> ParseResult<Self>
-	where
-		I: Iterator<Item = Cursor> + Clone,
-	{
-		p.parse::<GapRuleList<'a>>().map(Self::GapRuleList)
-	}
-}
-
-impl<'a> Parse<'a> for RowRuleStyleValue<'a> {
-	fn parse<I>(p: &mut Parser<'a, I>) -> ParseResult<Self>
-	where
-		I: Iterator<Item = Cursor> + Clone,
-	{
-		p.parse::<GapRuleList<'a>>().map(Self::GapRuleList)
-	}
-}
-
 #[cfg(test)]
 mod tests {
 	use super::super::*;
